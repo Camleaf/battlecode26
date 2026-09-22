@@ -45,7 +45,7 @@ public class RobotPlayer {
 
     class Rat {
         static void run(RobotController rc) throws GameActionException{
-            Navigate.greedyNav(rc, new MapLocation(0,20));
+            Navigate.bugNav(rc, new MapLocation(0,20));
         }
     }
 }

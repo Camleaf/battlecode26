@@ -8,5 +8,10 @@ import java.util.ArrayList;
 
 
 public class Constants {
+    public static Direction[] directions = Direction.values();
+
+
+
+    public static Random rand = new Random(1092);
 
 }

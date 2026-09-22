@@ -7,28 +7,32 @@ import battlecode.common.RobotController;
 
 public class Navigate {
     
-    public static void greedyNav(RobotController rc, MapLocation target) throws GameActionException{
-        Direction greedyDir = rc.getLocation().directionTo(target);
-        MapLocation adjLoc = rc.adjacentLocation(greedyDir);
+
+    static Direction lastDirection;
+
+    public static void bugNav(RobotController rc, MapLocation target) throws GameActionException{
         
-        if (!rc.sensePassability(adjLoc) || rc.senseRobotAtLocation(adjLoc)!=null){
-            if (rc.canRemoveDirt(adjLoc)) {
-                rc.removeDirt(adjLoc);
-            };
-            
-            
-
-            return;
-            // need solution to search surrounding corners
+        if (lastDirection == null) {
+            lastDirection = rc.getDirection();
         }
 
-        if (rc.canTurn()){
-            rc.turn(greedyDir);
+        Direction toTarget = rc.getLocation().directionTo(target);
+
+
+        if (!rc.canMove(toTarget)) {
+            toTarget = lastDirection; 
+            toTarget = toTarget.rotateLeft();
+            
+            if (rc.canTurn(toTarget)) rc.turn(toTarget);
+            if (rc.canMove(toTarget)) rc.move(toTarget);
+
+        } else {
+            if (rc.canTurn(toTarget)) {
+                rc.turn(toTarget);
+            }
+            rc.move(toTarget);
         }
-
-        if (rc.canMove(greedyDir)) rc.move(greedyDir);
-
-    }
-    
+        lastDirection = toTarget;
+    } 
 }
 
